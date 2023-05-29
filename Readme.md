@@ -29,9 +29,14 @@ python3 app.py
 
 ## API endpoints
 
+Ping GET request :
+```
+/ping/
+```
+
 
 Post a request : POST request *(Post data(text) as form-data in request body)*
 ```
-/
+/ask/
 ```
 
