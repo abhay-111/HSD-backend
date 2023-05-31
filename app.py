@@ -1,6 +1,6 @@
 from bson import objectid, json_util
 from flask import Flask, Response, request, json, jsonify
-from pymongo import MongoClient
+from flask_cors import CORS, cross_origin
 import json
 
 import logging as log
@@ -17,6 +17,7 @@ log.basicConfig(
 )
 
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 
 
 @app.route('/ping/', methods=['GET'])
@@ -27,6 +28,7 @@ def read():
 
 
 @app.route('/ask/', methods=['POST'])
+@cross_origin()
 def write():
     print("Writing Data")
     print(request)
