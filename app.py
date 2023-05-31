@@ -1,6 +1,8 @@
 from bson import objectid, json_util
 from flask import Flask, Response, request, json, jsonify
 from pymongo import MongoClient
+import json
+
 import logging as log
 
 import src, main
@@ -27,15 +29,18 @@ def read():
 @app.route('/ask/', methods=['POST'])
 def write():
     print("Writing Data")
-    data = request.form.to_dict()  # convert multidict to dict
-    # data = request.get_json()  # extract JSON data from request body
+    print(request)
+    data = request.data.decode('utf-8')
+    data = data.split(":")
+    data = {"text": data[1][1:-2]}
     print(data)
     result1 = src.run(data['text'])
     result2 = main.run(data['text'])
     try:
         result2 = result2[0]
     except Exception as e:
-        pass
+        print(e)
+        return {"error": "No results found"}
     return Response(response=json.dumps({
                                             "result1": result1,
                                             "result2": result2
