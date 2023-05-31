@@ -30,9 +30,9 @@ def read():
 def write():
     print("Writing Data")
     print(request)
-    data = request.data.decode('utf-8')
-    data = data.split(":")
-    data = {"text": data[1][1:-2]}
+    content_type = request.headers.get('Content-Type')
+    print(content_type)
+    data = json.loads(request.data.decode('utf-8'))
     print(data)
     result1 = src.run(data['text'])
     result2 = main.run(data['text'])
@@ -40,7 +40,6 @@ def write():
         result2 = result2[0]
     except Exception as e:
         print(e)
-        return {"error": "No results found"}
     return Response(response=json.dumps({
                                             "result1": result1,
                                             "result2": result2
